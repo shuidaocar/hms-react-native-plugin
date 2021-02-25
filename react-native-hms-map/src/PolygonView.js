@@ -1,11 +1,11 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0 (the "License")
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-import {exact, oneOf, number, arrayOf, bool, func} from "prop-types";
+import {exact, oneOf, number, arrayOf, bool, func, oneOfType} from "prop-types";
 import React, {Component} from "react";
 import {requireNativeComponent, ViewPropTypes} from "react-native";
 import {PatternItemTypes} from "./constants";
@@ -48,9 +48,9 @@ HMSPolygonView.propTypes = {
     ),
   ),
   clickable: bool,
-  fillColor: number,
+  fillColor: oneOfType([number, arrayOf(number)]),
   geodesic: bool,
-  strokeColor: number,
+  strokeColor: oneOfType([number, arrayOf(number)]),
   strokeJointType: number,
   strokeWidth: number,
   strokePattern: arrayOf(
@@ -65,7 +65,7 @@ HMSPolygonView.propTypes = {
 };
 
 const RNHMSPolygonView = requireNativeComponent(
-  "RNHMSPolygonView",
+  "HMSPolygonView",
   HMSPolygonView,
 );
 

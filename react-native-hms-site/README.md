@@ -1,109 +1,50 @@
-# react-native-hms-site
+<p align="center">
+  <h1 align="center">React-Native HMS Site</h1>
+</p>
 
-## Contents
-1. Introduction
-2. Installation Guide
-3. Function Definitions
-4. Configuration & Description
-5. Licencing & Terms
+<p align="center">
+  <a href="https://www.npmjs.com/package/@hmscore/react-native-hms-site"><img src="https://img.shields.io/npm/dm/@hmscore/react-native-hms-site?color=%23007EC6&style=for-the-badge" alt="downloads"></a>
+  <a href="https://www.npmjs.com/package/@hmscore/react-native-hms-site"><img src="https://img.shields.io/npm/v/@hmscore/react-native-hms-site?color=%23ed2a1c&style=for-the-badge" alt="NPM version"></a>
+  <a href="/LICENCE"><img src="https://img.shields.io/npm/l/@hmscore/react-native-hms-site.svg?color=%3bcc62&style=for-the-badge" alt="License"></a>
+</p>
 
-## 1. Intruduction
+---
 
-This module enables communication between Huawei Site SDK and React Native platform. It exposes all functionality provided by Huawei Site SDK.
+React Native Site Plugin provides adaptation code for HUAWEI Site Kit to use the React Native platform. With HUAWEI Site Kit, your app can provide users with convenient and secure access to diverse, place-related services.
 
-## 2. Installation Guide
+[> Learn More](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/introduction-0000001050176404)
 
-- Download the module and copy it into 'node_modules' folder. The folder structure can be seen below;
+## Installation
 
-```
-project-name
-    |_ node_modules
-        |_ ...
-        |_ react-native-hms-site
-        |_ ...
-```
-- Add following lines into 'android/settings.gradle' file
-```groovy
-include ':react-native-hms-site'
-project(':react-native-hms-site').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-hms-site/android')
+```bash
+$ npm i @hmscore/react-native-hms-site
 ```
 
-- Add maven repository address and AppGallery Connect service dependencies into 'android/build.gradle' file.
+## Documentation
 
-```groovy
-maven {url 'https://developer.huawei.com/repo/'}
-classpath 'com.huawei.agconnect:agcp:1.2.1.301'
-```
+- [Quick Start](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/preparing-dev-environment-0000001050267820)
+- [Reference](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-References/overview-0000001051070802)
 
-- Add AppGallery Connect plugin and 'react-native-hms-site' dependency into 'android/app/build.gradle' file.
+### Additional Topics
 
-```groovy
-apply plugin: 'com.huawei.agconnect'
-implementation project(":react-native-hms-site")
-```
+- [Place Search](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/placesearch-0000001050178701)
+- [Nearby Place Search](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/nearbyplacesearch-0000001050176632)
+- [Place Details](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/placedetails-0000001050418613)
+- [Place Search Suggestion](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/placesearchsuggestion-0000001050267566)
+- [Search Widget](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-Guides/searchwidget-0000001054950448)
 
-- Download 'agconnect-services.json' file and put it under 'android/app' folder.
+## Questions or Issues
 
-- Put keystore file under 'android/app' folder. Add signing configuration into 'android/app/build.gradle' file.
+If you have questions about how to use HMS samples, try the following options:
 
-```groovy
-signingConfigs {
-        release {
-            storeFile file('<keystore>')
-            storePassword '<storePassword>'
-            keyAlias '<keyAlias>'
-            keyPassword '<keyPassword>'
-        }
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/huawei-mobile-services) is the best place for any programming questions. Be sure to tag your question with
+  **huawei-mobile-services**.
+- [Github](https://github.com/HMS-Core/hms-react-native-plugin) is the official repository for these plugins, You can open an issue or submit your ideas.
+- [Huawei Developer Forum](https://forums.developer.huawei.com/forumPortal/en/home?fid=0101187876626530001) HMS Core Module is great for general questions, or seeking recommendations and opinions.
+- [Huawei Developer Docs](https://developer.huawei.com/consumer/en/doc/overview/HMS-Core-Plugin) is place to official documentation for all HMS Core Kits, you can find detailed documentations in there.
 
-        debug {
-            storeFile file('<keystore>')
-            storePassword '<storePassword>'
-            keyAlias '<keyAlias>'
-            keyPassword '<keyPassword>'
-        }
-    }
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
-        release {
-            signingConfig signingConfigs.release
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
-```
+If you run into a bug in our samples, please submit an issue to the [GitHub repository](https://github.com/HMS-Core/hms-react-native-plugin).
 
-- Add 'RNHMSSitePackage' to your application.
+## License
 
-```java
-import com.huawei.hms.rn.site.RNHMSSitePackage;
-...
-...
-
-@Override
-protected List<ReactPackage> getPackages() {
-  @SuppressWarnings("UnnecessaryLocalVariable")
-  List<ReactPackage> packages = new PackageList(this).getPackages();
-  packages.add(new RNHMSSitePackage());
-  return packages;
-}
-```
-
-## 3. Function Definitions
-
-|Return Type | Function                                     |
-|:-----------|:---------------------------------------------|
-|Promise     | initializeService(config)                    |
-|Promise     | textSearch(textSearchRequest)                |
-|Promise     | detailSearch(detailSearchRequest)            |
-|Promise     | querySuggestion(querySuggestionRequest)      | 
-|Promise     | nearbySearch(nearbySearchRequest)            |
-
-## 3. Confuguration & Description
-No.
-
-## 4. Licencing & Terms
-Apache 2.0 license.
-
-
+Huawei React-Native Plugin is licensed under [Apache 2.0 license](LICENCE)

@@ -146,10 +146,12 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('<keystore_file>.jks')
+            storeFile file('<keystore_file>')
             storePassword '<keystore_password>'
             keyAlias '<key_alias>'
             keyPassword '<key_password>'
+            v1SigningEnabled true;
+            v2SigningEnabled true;
         }
     }
 
@@ -189,7 +191,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(':react-native-hms-map')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

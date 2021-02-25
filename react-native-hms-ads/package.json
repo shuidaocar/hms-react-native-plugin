@@ -1,8 +1,8 @@
 {
   "name": "@hmscore/react-native-hms-ads",
   "title": "React Native HMS Ads Kit",
-  "description": "React Native HMS Ads Kit", 
-  "version": "4.0.4",
+  "description": "React Native HMS Ads Kit",
+  "version": "13.4.35-300",
   "main": "src/index.js",
   "repository": {
     "type": "git",
@@ -16,24 +16,26 @@
   "keywords": [
     "react-native",
     "react-native-ads",
-    "hms-ads",
     "huawei-ads",
-    "ads-kit"
+    "hms-ads",
+    "ads"
   ],
   "files": [
-    "src",
     "android",
+    "example",
+    "src",
     "LICENCE",
     "package.json",
     "README.md"
-  ],  
+  ],
   "peerDependencies": {
-    "prop-types": "^15.7.2",
-    "react": "^16.8.1",
-    "react-native": ">=0.60.0-rc.0 <1.0.x"
+    "react": "^16.6.0",
+    "react-native": ">=0.60.0 <1.0.x"
   },
   "devDependencies": {
-    "react": "^16.9.0",
-    "react-native": "^0.61.5"
-  }
+    "react": "16.6.0",
+    "react-native": "0.60.0",
+    "typescript": "^3.9.5"
+  },
+  "types": "src/index.d.ts"
 }
