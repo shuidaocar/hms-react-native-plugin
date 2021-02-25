@@ -1,11 +1,11 @@
 /*
-    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020-2021. Huawei Technologies Co., Ltd. All rights reserved.
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0 (the "License")
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +13,10 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
-declare module "react-native-hms-map" {
+
+declare module "@hmscore/react-native-hms-map" {
   import * as React from "react";
-  import {NativeSyntheticEvent, ViewProps, View} from "react-native";
+  import { NativeSyntheticEvent, ViewProps } from "react-native";
 
   /**
    *  Defines the longitude and latitude, in degrees.
@@ -321,6 +322,21 @@ declare module "react-native-hms-map" {
      *  Creates object using the absolute path to an image resource.
      */
     path?: string;
+
+     /**
+     *  Creates object using the uri of the image resource.
+     */
+    uri?: string;
+
+     /**
+     *  Width of the image for images that we get from uri.
+     */
+    width?: number;
+
+     /**
+     *  Height of the image for images that we get from uri.
+     */
+    height?: number;
   }
 
   /**
@@ -354,6 +370,43 @@ declare module "react-native-hms-map" {
     url: string;
 
     /**
+     *  List of zoom levels enabled for tile provider.
+     */
+    zoom?: number[];
+
+    /**
+     *  Width of a tile, in pixels.
+     */
+    width?: number;
+
+    /**
+     *  Height of a tile, in pixels.
+     */
+    height?: number;
+  }
+
+  export interface CustomTile {
+    /**
+     *  Name of the file under assets folder
+     */
+    asset: string;
+
+    /**
+     *  Horizontal tile index.
+     */
+    x: number;
+
+    /**
+     *  Vertical tile index.
+     */
+    y: number;
+
+    /**
+     *  Zoom level.
+     */
+    zoom: number;
+
+    /**
      *  Width of a tile, in pixels.
      */
     width?: number;
@@ -365,14 +418,115 @@ declare module "react-native-hms-map" {
   }
 
   /**
-   *  Events triggered by the map.
+   * FORWARDS = 0
+   * BACKWARDS = 1
    */
-  export interface MapEvent<T = {}> extends NativeSyntheticEvent<T> {}
+  export type FillMode = 0 | 1;
 
   /**
-   *  Props for <Circle> component.
+   * RESTART = 1
+   * REVERSE = 2
    */
-  export interface CircleProps {
+  export type RepeatMode = 1 | 2;
+
+  /**
+   *   LINEAR = 0
+   * ACCELERATE = 1
+   * ANTICIPATE = 2
+   * BOUNCE = 3
+   * DECELERATE = 4
+   * OVERSHOOT = 5
+   * ACCELERATE_DECELERATE = 6
+   * FAST_OUT_LINEAR_IN = 7
+   * FAST_OUT_SLOW_IN = 8
+   * LINEAR_OUT_SLOW_IN = 9
+   */
+  export type Interpolator = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+  /**
+   * Marker animation that rotates the marker
+   */
+  export interface Rotate {
+    fromDegree: number;
+    toDegree: number;
+    duration?: number;
+    fillMode?: FillMode;
+    repeatCount?: number;
+    repeatMode?: RepeatMode;
+    interpolator?: Interpolator;
+  }
+
+  /**
+   * Marker animation that changes the opacity of marker
+   */
+  export interface Alpha {
+    fromAlpha: number;
+    toAlpha: number;
+    duration?: number;
+    fillMode?: FillMode;
+    repeatCount?: number;
+    repeatMode?: RepeatMode;
+    interpolator?: Interpolator;
+  }
+
+  /**
+   * Marker animation that scales the marker vertically and horizontally
+   */
+  export interface Scale {
+    fromX: number;
+    toX: number;
+    fromY: number;
+    toY: number;
+    duration?: number;
+    fillMode?: FillMode;
+    repeatCount?: number;
+    repeatMode?: RepeatMode;
+    interpolator?: Interpolator;
+  }
+
+  /**
+   * Marker animation that moves the marker to the target coordinate
+   */
+  export interface Translate {
+    latitude: number;
+    longitude: number;
+    duration?: number;
+    fillMode?: FillMode;
+    repeatCount?: number;
+    repeatMode?: RepeatMode;
+    interpolator?: Interpolator;
+  }
+
+  /**
+   * Default options for common fields in all animation types. 
+   */
+  export interface DefaultAnimationOptions {
+    duration?: number;
+    fillMode?: FillMode;
+    repeatCount?: number;
+    repeatMode?: RepeatMode;
+    interpolator?: Interpolator;
+  }
+
+  /**
+   * Animation object to specify what type of animations will be applied to the marker.
+   */
+  export interface MarkerAnimation {
+    rotate?: Rotate;
+    alpha?: Alpha;
+    scale?: Scale;
+    translate?: Translate;
+  }
+
+  /**
+   *  Events triggered by the map.
+   */
+  export interface MapEvent<T = {}> extends NativeSyntheticEvent<T> { }
+
+  /**
+   *  Props for <HMSCircle> component.
+   */
+  export interface HMSCircleProps {
     /**
      *  Center of the circle.
      */
@@ -391,12 +545,12 @@ declare module "react-native-hms-map" {
     /**
      *  The fill color of the circle, in ARGB format.
      */
-    fillColor?: number;
+    fillColor?: number | number[];
 
     /**
      *  The stroke color of the circle's outline.
      */
-    strokeColor?: number;
+    strokeColor?: number | number[];
 
     /**
      *  The stroke width of the circle's outline.
@@ -430,7 +584,7 @@ declare module "react-native-hms-map" {
   /**
    *  React component that shows a circle object on the map.
    */
-  export class Circle extends React.Component<CircleProps, any> {}
+  export class HMSCircle extends React.Component<HMSCircleProps, any> { }
 
   /**
    *  The joint type for a polyline or the outline of a polygon.
@@ -441,9 +595,9 @@ declare module "react-native-hms-map" {
   export type JointType = 0 | 1 | 2;
 
   /**
-   *  Props for <Polygon> component.
+   *  Props for <HMSPolygon> component.
    */
-  export interface PolygonProps {
+  export interface HMSPolygonProps {
     /**
      *  Vertex coordinates of the polygon.
      */
@@ -462,7 +616,7 @@ declare module "react-native-hms-map" {
     /**
      *  The fill color of the polygon, in ARGB format.
      */
-    fillColor?: number;
+    fillColor?: number | number[];
 
     /**
      *  Whether each segment of the polygon is drawn as a geodesic.
@@ -472,7 +626,7 @@ declare module "react-native-hms-map" {
     /**
      *  The stroke color of the polygon's outline.
      */
-    strokeColor?: number;
+    strokeColor?: number | number[];
 
     /**
      *  The joint type of the polygon.
@@ -514,12 +668,12 @@ declare module "react-native-hms-map" {
    *  A polygon can be convex or concave. It can span
    *  the 180 meridian and have holes that are not filled in.
    */
-  export class Polygon extends React.Component<PolygonProps, any> {}
+  export class HMSPolygon extends React.Component<HMSPolygonProps, any> { }
 
   /**
-   *  Props for <Polyline> component.
+   *  Props for <HMSPolyline> component.
    */
-  export interface PolylineProps {
+  export interface HMSPolylineProps {
     /**
      *  Vertex set of the polyline.
      */
@@ -533,7 +687,7 @@ declare module "react-native-hms-map" {
     /**
      *  The stroke color of a polyline in ARGB format.
      */
-    color?: number;
+    color?: number | number[];
 
     /**
      *  Whether each segment of the polyline is drawn as a geodesic.
@@ -590,12 +744,12 @@ declare module "react-native-hms-map" {
    *  vertices where line segments are drawn between consecutive
    *  vertices, on the map.
    */
-  export class Polyline extends React.Component<PolylineProps, any> {}
+  export class HMSPolyline extends React.Component<HMSPolylineProps, any> { }
 
   /**
-   *  Props for <Marker> component.
+   *  Props for <HMSMarker> component.
    */
-  export interface MarkerProps {
+  export interface HMSMarkerProps {
     /**
      *  The position of a marker.
      */
@@ -673,6 +827,11 @@ declare module "react-native-hms-map" {
     clusterable?: boolean;
 
     /**
+    *  Whether the animation does the default action on marker click.
+    */
+    defaultActionOnClick?: boolean;
+
+    /**
      *  Listener for the event called when the marker is clicked.
      */
     onClick?: (event: MapEvent<{}>) => void;
@@ -706,13 +865,23 @@ declare module "react-native-hms-map" {
      *  Event listener for long clicks on the information window.
      */
     onInfoWindowLongClick?: (event: MapEvent<{}>) => void;
+
+    /**
+     *  Listener for the event called animation starts.
+     */
+    onAnimationStart?: (event: MapEvent<{}>) => void;
+
+    /**
+     *  Listener for the event called animation starts.
+     */
+    onAnimationEnd?: (event: MapEvent<{}>) => void;
   }
 
   /**
    *  React component that shows a marker object, an icon placed at
    *  a specified position, on the map.
    */
-  export class Marker extends React.Component<MarkerProps, any> {
+  export class HMSMarker extends React.Component<HMSMarkerProps, any> {
     /**
      *  Shows infromation window.
      */
@@ -722,12 +891,28 @@ declare module "react-native-hms-map" {
      *  Hides infromation window.
      */
     hideInfoWindow(): void;
+
+    /**
+     *  Starts marker animation.
+     */
+    startAnimation(): void;
+
+    /**
+     *  Cleans the animation which is previously set
+     */
+    cleanAnimation(): void;
+
+    /**
+     * Sets the marker animation
+     */
+    setAnimation(markerAnimation: MarkerAnimation, defaultAnimationOptions: DefaultAnimationOptions): void;
+
   }
 
   /**
    *  React component that shows infromation window on a marker
    */
-  export class InfoWindow extends React.Component<ViewProps, any> {}
+  export class HMSInfoWindow extends React.Component<ViewProps, any> { }
 
   export interface LatLngWithSize extends LatLng {
     /**
@@ -742,9 +927,9 @@ declare module "react-native-hms-map" {
   }
 
   /**
-   *  Props for <GroundOverlay> component.
+   *  Props for <HMSGroundOverlay> component.
    */
-  export interface GroundOverlayProps {
+  export interface HMSGroundOverlayProps {
     /**
      *  The image for the ground overlay.
      */
@@ -805,16 +990,16 @@ declare module "react-native-hms-map" {
    *  React component that shows a ground overlay object, an image
    *  that is fixed to the map.
    */
-  export class GroundOverlay extends React.Component<GroundOverlayProps, any> {}
+  export class HMSGroundOverlay extends React.Component<HMSGroundOverlayProps, any> { }
 
   /**
-   *  Props for <TileOverlay> component.
+   *  Props for <HMSTileOverlay> component.
    */
-  export interface TileOverlayProps {
+  export interface HMSTileOverlayProps {
     /**
      *  The provider of the tile overlay.
      */
-    tileProvider: TileProvider;
+    tileProvider: TileProvider | CustomTile[];
 
     /**
      *  Whether the tile overlay fades in.
@@ -844,7 +1029,7 @@ declare module "react-native-hms-map" {
    *  React component that shows a tile overlay object,
    *  which is a set of images to be displayed on a map.
    */
-  export class TileOverlay extends React.Component<TileOverlayProps, any> {
+  export class HMSTileOverlay extends React.Component<HMSTileOverlayProps, any> {
     /**
      *  Clears the cache of the tile overlay.
      */
@@ -900,7 +1085,29 @@ declare module "react-native-hms-map" {
   /**
    *  Props for <MapView> component.
    */
-  export interface MapViewProps extends ViewProps {
+  export interface HMSMapProps extends ViewProps {
+
+    /**
+     * Indicates whether to enable the traffic status layer. 
+     * The options are true (yes) and false (no).
+     * The default value is false.
+     */
+    trafficEnabled: boolean;
+
+    /**
+     * Sets a fixed screen center for zooming.
+     * The passed screen center is valid only when true is passed to setGestureScaleByMapCenter prop.
+     * To cancel the function of setting a fixed screen center,
+     * you only need to pass false to setGestureScaleByMapCenter prop without calling setPointToCenter.
+     */
+    pointToCenter: Point;
+
+    /**
+     * Specifies whether a fixed screen center can be set for zooming.
+     * If the function is enabled, the map will be zoomed based on the passed fixed screen center. 
+     */
+    gestureScaleByMapCenter: boolean;
+
     /**
      *  Starting position of the camera on the map.
      */
@@ -1057,12 +1264,12 @@ declare module "react-native-hms-map" {
     /**
      *  Listener for the event when the camera moves
      */
-    onCameraMove?: (event: MapEvent<{CameraPosition}>) => void;
+    onCameraMove?: (event: MapEvent<{ CameraPosition }>) => void;
 
     /**
      *  Listener for the event when the camera movement started.
      */
-    onCameraMoveStarted?: (event: MapEvent<{reason: number}>) => void;
+    onCameraMoveStarted?: (event: MapEvent<{ reason: number }>) => void;
 
     /**
      *  Event listener for clicks on the map.
@@ -1104,7 +1311,7 @@ declare module "react-native-hms-map" {
   /**
    *  React component that shows a map.
    */
-  export default class MapView extends React.Component<MapViewProps, any> {
+  export default class HMSMap extends React.Component<HMSMapProps, any> {
     /**
      *  Obtains all attributes of the Huawei map object
      */
@@ -1259,5 +1466,27 @@ declare module "react-native-hms-map" {
      *  Decreases the zoom level of the camera by 1.
      */
     zoomOut(): void;
+
+    /**
+     * Enables HMSLogger
+     */
+    enableLogger(): void;
+
+    /**
+     * Disables HMSLogger
+     */
+    disableLogger(): void;
+
+    /**
+     * Gets the layer info about map layer objects
+     * @param ref Reference object 
+     */
+    getLayerInfo(ref: object): Promise<object>;
+
+    /**
+     * Gets the layer options info about map layer objects
+     * @param ref Reference object 
+     */
+    getLayerOptionsInfo(ref: object): Promise<object>;
   }
 }

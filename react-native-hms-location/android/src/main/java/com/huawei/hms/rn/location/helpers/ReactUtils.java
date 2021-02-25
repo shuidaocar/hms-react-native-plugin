@@ -1,11 +1,11 @@
 /*
-Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
+    Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 
-    Licensed under the Apache License, Version 2.0 (the "License");
+    Licensed under the Apache License, Version 2.0 (the "License")
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,6 @@ Copyright 2020. Huawei Technologies Co., Ltd. All rights reserved.
 */
 
 package com.huawei.hms.rn.location.helpers;
-
-import androidx.core.app.ActivityCompat;
 
 import android.util.Log;
 
@@ -28,6 +26,7 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.huawei.hms.rn.location.backend.interfaces.ActivityHolder;
 import com.huawei.hms.rn.location.backend.interfaces.HMSProvider;
 
@@ -38,6 +37,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 public class ReactUtils {
     private static String TAG = ReactUtils.class.getSimpleName();
@@ -45,7 +45,10 @@ public class ReactUtils {
     public static <T extends HMSProvider> T initializeProvider(T provider, ReactContext ctx, ActivityHolder holder) {
         provider.setActivityHolder(holder);
         provider.setEventSender((eventName, eventValue) -> ReactUtils.sendEvent(ctx, eventName, toWM(eventValue)));
-        provider.setPermissionHandler((reqCode, permissions) -> ActivityCompat.requestPermissions(holder.getActivity(), permissions, reqCode));
+        provider.setPermissionHandler((reqCode, permissions) -> ((PermissionAwareActivity) Objects.requireNonNull(ctx.getCurrentActivity())).requestPermissions(permissions, reqCode, (requestCode, permissions1, grantResults) -> {
+            provider.onRequestPermissionsResult(requestCode, permissions1, grantResults);
+            return false;
+        }));
         return provider;
     }
 
