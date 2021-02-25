@@ -25,6 +25,9 @@ import com.huawei.hms.push.RemoteMessage;
 import com.huawei.hms.rn.push.constants.Core;
 import com.huawei.hms.rn.push.utils.RemoteMessageUtils;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class HmsMessagePublisher extends ReactContextBaseJavaModule {
     private static String TAG = HmsMessagePublisher.class.getSimpleName();
     private static volatile ReactApplicationContext context;
@@ -60,18 +63,35 @@ public class HmsMessagePublisher extends ReactContextBaseJavaModule {
                 .emit(Core.Event.TOKEN_RECEIVED_EVENT, params);
     }
 
+  public static boolean isInit() {
+    return HmsPushMessaging.getContext() != null && HmsPushMessaging.getContext().hasActiveCatalystInstance();
+  }
+
+  private static void doPolling(String event, WritableMap params) {
+    TimerTask task = new TimerTask() {
+      @Override
+      public void run() {
+        if(HmsMessagePublisher.isInit()) {
+          HmsPushMessaging.getContext()
+              .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+              .emit(event, params);
+        }else{
+          doPolling(event, params);
+        }
+      }
+    };
+    Timer timer = new Timer();
+    timer.schedule(task, 1000);
+  }
 
     public static void sendMessageReceivedEvent(RemoteMessage remoteMessage) {
 
         WritableMap params = Arguments.createMap();
         params.putMap(Core.Event.Result.MSG, RemoteMessageUtils.toWritableMap(remoteMessage));
-
-        ReactApplicationContext reactApplicationContext = getContext();
-        if (reactApplicationContext != null) {
-            reactApplicationContext
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(Core.Event.REMOTE_DATA_MESSAGE_RECEIVED, params);
-        }
+//        HmsPushMessaging.getContext()
+//            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+//            .emit(Core.Event.REMOTE_DATA_MESSAGE_RECEIVED, params);
+        doPolling(Core.Event.REMOTE_DATA_MESSAGE_RECEIVED, params);
     }
 
     public static void sendTokenErrorEvent(Exception e) {
